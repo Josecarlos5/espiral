@@ -1,6 +1,6 @@
 
-name: runa_matrix
-description: A matrix of floating rune symbols with background music in Flutter.
+name: spiral_animation
+description: A Flutter project to display a rotating color-changing spiral with music.
 version: 1.0.0+1
 
 environment:
@@ -9,10 +9,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  audioplayers: ^6.1.0  # Audio playback package
+  audioplayers: ^6.1.0
 
 flutter:
   uses-material-design: true
 
   assets:
-    - assets/1.mp3  # Your music file here
+    - assets/1.mp3
