@@ -1,5 +1,4 @@
 
-
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'dart:math';
@@ -27,18 +26,23 @@ class SpiralScreen extends StatefulWidget {
 class _SpiralScreenState extends State<SpiralScreen> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   final AudioPlayer _audioPlayer = AudioPlayer();
+  bool _isPlaying = false;
 
   @override
   void initState() {
     super.initState();
     _controller = AnimationController(vsync: this, duration: Duration(seconds: 10))
       ..repeat(); // Infinite animation
-    _playMusic();
   }
 
   Future<void> _playMusic() async {
-    await _audioPlayer.setReleaseMode(ReleaseMode.loop);
-    await _audioPlayer.play(AssetSource('1.mp3'));
+    if (!_isPlaying) {
+      await _audioPlayer.setReleaseMode(ReleaseMode.loop);
+      await _audioPlayer.play(AssetSource('1.mp3')); // Play after tap
+      setState(() {
+        _isPlaying = true; // Ensure it doesn't play multiple times
+      });
+    }
   }
 
   @override
@@ -50,16 +54,19 @@ class _SpiralScreenState extends State<SpiralScreen> with SingleTickerProviderSt
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.black,
-      body: AnimatedBuilder(
-        animation: _controller,
-        builder: (context, child) {
-          return CustomPaint(
-            painter: SpiralPainter(_controller.value),
-            child: Container(),
-          );
-        },
+    return GestureDetector(
+      onTap: _playMusic, // Play MP3 after tapping the screen
+      child: Scaffold(
+        backgroundColor: Colors.black,
+        body: AnimatedBuilder(
+          animation: _controller,
+          builder: (context, child) {
+            return CustomPaint(
+              painter: SpiralPainter(_controller.value),
+              child: Container(),
+            );
+          },
+        ),
       ),
     );
   }
